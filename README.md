@@ -4,8 +4,8 @@
 | :--------------------------------: |
 |             my macbook             |
 
-Here are dotfiles for my systems, M1 MacBook Air and Lenovo ThinkPad X270.
-MBA runs the latest version of macOS, and X270 runs the latest version of Fedora Sway Spin.
+Here are dotfiles for my systems, Framework 13 (AMD Ryzen AI 5 340 & 2.8k display) and M1 MacBook Air.
+MBA runs the latest version of macOS, and Framework runs the latest version of Fedora KDE Plasma (check out [Haunted Tiles](https://github.com/theopn/haunted-tiles/), my Sway config).
 
 Tools in this repository are mostly open-source utilities for development.
 
@@ -199,6 +199,7 @@ Formulae:
 - **neovim**: Purpose of my life
 - **node**
 - poppler: `pdftotext in.pdf -` (LF preview script dependency)
+- r
 - ripgrep: faster alternative to `grep` (Neovim Telescope dependency)
 - **rust**
 - **tmux**: Universal terminal multiplexer
@@ -210,11 +211,13 @@ Casks:
 | Development     | Fun       | Productivity | Sync        | System        | Tools         | Web         |
 | --------------- | --------- | ------------ | ----------- | ------------- | ------------- | ----------- |
 | Docker          | Discord   | **Itsycal**  | Cryptomator | **Aerospace** | **Bitwarden** | Chromium    |
-| IntelliJ CE     | Minecraft | Notion       | Filen       | **Ice**       | GIMP          | **Firefox** |
-| kitty           | Spotify   |              | Nextcloud   | **Maccy**     | OBS           | Tailscale   |
-| MacTex (no GUI) |           |              | Syncthing   | **Stats**     | **Skim**      | Thunderbird |
-| **Macvim**      |           |              |             | e             | VLC           |             |
-| Neovide         |           |              |             |               |               |             |
+| IntelliJ CE     | Minecraft | Notion       | Filen       | **Ice**       | CEmu          | **Firefox** |
+| kitty           | Spotify   |              | Nextcloud   | **Maccy**     | GIMP          | Tailscale   |
+| MacTex (no GUI) |           |              | Syncthing   | **Stats**     | KeyCastr      | Thunderbird |
+| **Macvim**      |           |              |             |               | OBS           |             |
+| Neovide         |           |              |             |               | **Skim**      |             |
+| RStudio         |           |              |             |               | VLC           |             |
+| UTM             |           |              |             |               |               |             |
 | **Wezterm**     |           |              |             |               |               |             |
 
 ### macOS Settings
@@ -237,4 +240,5 @@ See the [list of archived configurations](./archive/README.md).
 - Sketchybar: [default plugins](https://github.com/FelixKratz/SketchyBar/tree/master/plugins)
 - Vim: [kickstart.vim](https://github.com/theopn/kickstart.vim)
 - Wezterm: [my Wezterm config video](https://www.youtube.com/watch?v=I3ipo8NxsjY)
-- [Haunted Tiles](https://github.com/theopn/haunted-tiles/) has dotfiles for my minimal, Dracula-themed Fedora i3/Sway Spin environment.
+- [Haunted Tiles](https://github.com/theopn/haunted-tiles/) has dotfiles for my minimal, Dracula-themed i3/Sway environment.
+

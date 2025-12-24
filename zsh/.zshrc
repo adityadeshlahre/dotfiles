@@ -10,8 +10,98 @@
 #
 # Interactive shell config
 
-# Vim mode
+
+# Shared history across sessions
+setopt share_history
+# Vim mode & faster key timeout
 bindkey -v
+KEYTIMEOUT=1
+# C-x C-e to edit the command int $EDITOR
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
+
+##### Git Information #####
+autoload -Uz vcs_info
+
+zstyle ':vcs_info:*' enable git
+# Hook before every commands
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+
+zstyle ':vcs_info:*' check-for-changes true
+
+zstyle ':vcs_info:*' unstagedstr '*'
+zstyle ':vcs_info:*' stagedstr '+'
+zstyle ':vcs_info:git:*' formats '%b%u%c'
+# Only displayed in Git action like rebase, merge, cherry-pick
+zstyle ':vcs_info:git:*' actionformats '[%b | %a%u%c]'
+
+
+##### Vim mode indicator & cursor #####
+# Cursor: https://unix.stackexchange.com/questions/433273/changing-cursor-style-based-on-mode-in-both-zsh-and-vim
+# prompt: https://superuser.com/questions/151803/how-do-i-customize-zshs-vim-mode
+# perform parameter expansion/command substitution in prompt
+setopt PROMPT_SUBST
+
+ins_mode_indicator="%F{black}%K{green} I %k%f"
+ins_mode_cursor="\e[6 q"        # steady bar, 5 for blinking bar
+norm_mode_indicator="%F{black}%K{cyan} N %k%f"
+norm_mode_cursor="\e[2 q"       # steady block, 1 for blinking block (default)
+# Initial mode
+vi_mode_indicator=$ins_mode_indicator
+cursor=$ins_mode_indicator
+
+# Reset to [I] cursor before each command
+# imo, this is better than modifying the `precmd_functions` array
+# since we take care of the line editor issues within the ZLE itself
+# Without this: the cursor is block upon terminal launch
+zle-line-init() {
+    echo -ne "$ins_mode_cursor"
+}
+zle -N zle-line-init
+
+# On keymap change, redraw the prompt
+zle-keymap-select() {
+  if [[ "$KEYMAP" == 'vicmd' ]]; then
+    vi_mode_indicator=$norm_mode_indicator
+    echo -ne "$norm_mode_cursor"
+  else
+    vi_mode_indicator=$ins_mode_indicator
+    echo -ne "$ins_mode_cursor"
+  fi
+  zle reset-prompt
+}
+zle -N zle-keymap-select
+
+# Reset to [I] after the input reading
+# Without this: RET in [N] makes the next prompt [N] even though it is [I]
+zle-line-finish() {
+  vi_mode_indicator=$ins_mode_indicator
+}
+zle -N zle-line-finish
+
+# Catch SIGNIT and set the prompt to int again, and resend SIGINT
+# Without this: C-c in [N] makes the next prompt [N] even though it is [I]
+TRAPINT() {
+  vi_mode_indicator=$ins_mode_indicator
+  return $(( 128 + $1 ))
+}
+
+
+##### PROMPT #####
+
+# %(5~|%-1~/…/%3~|%4~) - IF path_len > 5 THEN print 1st element; print /.../; print last 3 elem; ELSE print 4 elem;
+PROMPT="%B\
+\$vi_mode_indicator\
+%F{cyan}%K{black} %(5~|%-1~/.../%3~|%4~) %k%f\
+%F{black}%K{blue} \$vcs_info_msg_0_ %k%f\
+%F{white} ❱ %f\
+%b"
+
+RPROMPT="%(?|%K{green}%F{black}|%K{red}%F{white})%B %? %b%f%k"
 
 
 ##### Alias #####
