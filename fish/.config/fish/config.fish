@@ -34,8 +34,12 @@ end
 #   bass source (brew --prefix nvm)/nvm.sh --no-use ';' nvm $argv
 # end
 #
-set -x NVM_DIR ~/.nvm
-nvm use latest --silent
+
+# set -x NVM_DIR ~/.nvm
+# nvm use latest --silent
+function nvm
+    bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
+end
 # nvm end
 
 
@@ -44,12 +48,14 @@ set -x GPG_TTY (tty)
 
 
 # Java installations (using Homebrew paths)
-set -x JAVA21_HOME (brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home
+# set -x JAVA21_HOME (brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home
+set -x JAVA21_HOME /opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home
 # set -x JAVA17_HOME (brew --prefix openjdk@17)/libexec/openjdk.jdk/Contents/Home
 
 # Default Java
 set -x JAVA_HOME $JAVA21_HOME
-set -x PATH $JAVA_HOME/bin $PATH
+# set -x PATH $JAVA_HOME/bin $PATH
+fish_add_path $JAVA_HOME/bin
 
 # Quick switching functions
 # function use-java17
@@ -63,3 +69,17 @@ function use-java21
     set -x PATH $JAVA_HOME/bin $PATH
     echo "Switched to Java 21"
 end
+
+# Load RVM functions
+# bass source $HOME/.rvm/scripts/rvm
+# rvm default
+function rvm
+    bass source $HOME/.rvm/scripts/rvm ';' rvm $argv
+end
+
+set -x LDFLAGS "-L/opt/homebrew/opt/openssl@1.1/lib -L/opt/homebrew/opt/readline/lib -L/opt/homebrew/opt/zlib/lib -L/opt/homebrew/opt/libyaml/lib"
+set -x CPPFLAGS "-I/opt/homebrew/opt/openssl@1.1/include -I/opt/homebrew/opt/readline/include -I/opt/homebrew/opt/zlib/include -I/opt/homebrew/opt/libyaml/include"
+set -x PKG_CONFIG_PATH "/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
+
+set -Ux EDITOR nvim
+set -Ux VISUAL nvim
