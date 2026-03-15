@@ -83,3 +83,4 @@ export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
 
 export EDITOR="nvim"
 export VISUAL="nvim"
+export GPG_TTY=$(tty)
