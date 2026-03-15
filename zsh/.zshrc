@@ -16,6 +16,8 @@ setopt share_history
 # Vim mode & faster key timeout
 bindkey -v
 KEYTIMEOUT=1
+# By default, Normal mode -> / is search
+bindkey '^R' history-incremental-search-backward
 # C-x C-e to edit the command int $EDITOR
 autoload -z edit-command-line
 zle -N edit-command-line
@@ -134,12 +136,12 @@ tarunmake() { tar -zxvf $1 }
 
 ##### Simple Trash Function #####
 function trash() {
-  if [[ -z "$MUMBOSHELL_TRASH_DIR" ]]; then
-    echo "You must provide MUMBOSHELL_TRASH_DIR"
+  if [[ -z "$THEOSHELL_TRASH_DIR" ]]; then
+    echo "You must provide THEOSHELL_TRASH_DIR"
     return 1
   fi
 
-  [[ ! -d ${MUMBOSHELL_TRASH_DIR} ]] && mkdir -p ${MUMBOSHELL_TRASH_DIR}
+  [[ ! -d ${THEOSHELL_TRASH_DIR} ]] && mkdir -p ${THEOSHELL_TRASH_DIR}
 
   if [[ -z $@ ]]; then
     echo 'Select file(s) to trash!'
@@ -147,7 +149,7 @@ function trash() {
   fi
 
   for file in "$@"; do
-    mv "$file" "$MUMBOSHELL_TRASH_DIR" && echo ":) $file moved to trash!" || echo ":( Failed to move $file to trash"
+    mv "$file" "$THEOSHELL_TRASH_DIR" && echo ":) $file moved to trash!" || echo ":( Failed to move $file to trash"
   done
 }
 
@@ -225,30 +227,30 @@ sshf() {
 ##### Directory Bookmark using FZF #####
 
 cdf() {
-  if [[ -z "$MUMBOSHELL_CDF_DIR" ]]; then
-    echo "You must provide MUMBOSHELL_CDF_DIR"
+  if [[ -z "$THEOSHELL_CDF_DIR" ]]; then
+    echo "You must provide THEOSHELL_CDF_DIR"
     return 1
   fi
 
-  dir=$(fzf --header="Favorite Directories" < $MUMBOSHELL_CDF_DIR)
+  dir=$(fzf --header="Favorite Directories" < $THEOSHELL_CDF_DIR)
   [[ ! -z "$dir" ]] && cd "$dir"
 }
 
 cdf_add() {
-  if [[ -z "$MUMBOSHELL_CDF_DIR" ]]; then
-    echo "You must provide MUMBOSHELL_CDF_DIR"
+  if [[ -z "$THEOSHELL_CDF_DIR" ]]; then
+    echo "You must provide THEOSHELL_CDF_DIR"
     return 1
   fi
 
-  if [[ ! -e $MUMBOSHELL_CDF_DIR ]]; then
-    mkdir -p $(dirname $MUMBOSHELL_CDF_DIR)
-    touch $MUMBOSHELL_CDF_DIR
+  if [[ ! -e $THEOSHELL_CDF_DIR ]]; then
+    mkdir -p $(dirname $THEOSHELL_CDF_DIR)
+    touch $THEOSHELL_CDF_DIR
   fi
 
-  pwd >> $MUMBOSHELL_CDF_DIR
+  pwd >> $THEOSHELL_CDF_DIR
 }
 
-alias cdf_edit="$EDITOR $MUMBOSHELL_CDF_DIR"
+alias cdf_edit="$EDITOR $THEOSHELL_CDF_DIR"
 
 
 ##### Git Information #####

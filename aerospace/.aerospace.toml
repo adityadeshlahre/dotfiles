@@ -11,11 +11,11 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
   'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0',
-  'exec-and-forget sketchybar'
+  # 'exec-and-forget sketchybar'
 ]
-exec-on-workspace-change = ['/bin/bash', '-c',
-   'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
-]
+# exec-on-workspace-change = ['/bin/bash', '-c',
+#    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+# ]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -115,8 +115,8 @@ automatically-unhide-macos-hidden-apps = false
     # '''
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-    alt-slash = 'layout tiles horizontal vertical'
-    alt-comma = 'layout accordion horizontal vertical'
+    alt-e = 'layout tiles horizontal vertical'
+    alt-w = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     alt-h = 'focus left'

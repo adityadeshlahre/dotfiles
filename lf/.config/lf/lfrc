@@ -17,9 +17,9 @@
 #           chafa + terminal with Sixel support
 #           OR a terminal with Kitty icat protocol support
 set preview
-set sixel
 set previewer ~/.config/lf/previewer
 set cleaner ~/.config/lf/cleaner
+map i $~/.config/lf/previewer $f | less -R
 
 # Like vim settings, put no in front ot the arrtibute to negate
 set nodrawbox
@@ -154,14 +154,13 @@ map , # find-prev                (default ',')
 map ff fzf_jump
 
 cmd trash !{{
-  export MUMBOSHELL_TRASH_DIR="$HOME/.local/share/mumbo/trash"
-  if [ ! -d ${MUMBOSHELL_TRASH_DIR} ]; then
-    mkdir -p ${MUMBOSHELL_TRASH_DIR}
+  export THEOSHELL_TRASH_DIR="$HOME/.local/share/mumbo/trash"
+  if [ ! -d ${THEOSHELL_TRASH_DIR} ]; then
+    mkdir -p ${THEOSHELL_TRASH_DIR}
   fi
   # $f = current cursor, $fs = selected files, $fx = ($fs exists) ? ($fs) : ($f)
-  IFS="$(printf '\n\t')"; mv $fx ${MUMBOSHELL_TRASH_DIR} && printf ":) $fx moved to trash!\n" || printf ":( Failed to move $fx to trash\n"
   # components are separated with : so mapping will not work properly when you have quotes around $fx
-  # IFS="$(printf '\n\t')"; mv $fx ${THEOSHELL_TRASH_DIR} && printf ":) $fx moved to trash!\n" || printf ":( Failed to move $fx to trash\n"
+  IFS="$(printf '\n\t')"; mv $fx ${THEOSHELL_TRASH_DIR} && printf ":) $fx moved to trash!\n" || printf ":( Failed to move $fx to trash\n"
 }}
 map DD trash
 
