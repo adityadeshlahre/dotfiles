@@ -5,7 +5,9 @@
 #
 
 abbr -a cl clear
+abbr -a dockerps docker ps
 abbr -a ga git add
+abbr -a lg lazygit
 abbr -a gcm git commit -m
 abbr -a gss git status
 abbr -a l ls -Alh --color=auto # [A]lmost all (except . && ..), [l]ist, [h]: display unit
