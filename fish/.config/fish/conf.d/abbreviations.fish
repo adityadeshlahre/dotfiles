@@ -8,6 +8,7 @@ abbr -a nv neovide --fork
 abbr -a v nvim
 abbr -a dockerps docker ps
 abbr -a lg lazygit
+abbr -a purdue_vpn sudo openconnect webvpn.purdue.edu
 
 # .. to cd .., ... to cd ../.., etc.
 function multicd
