@@ -117,8 +117,8 @@ Now is a good time to reopen the shell.
 fish ~/dotfiles/fish/.config/fish/set-universal.fish
 
 # Create and add directories to the directory bookmark/favorites list for my `cdf` fish/zsh function
-mkdir -p $XDG_DATA_HOME/theoshell && touch $XDG_DATA_HOME/theoshell/cd-fav.txt
-cat <<AHH >> $XDG_DATA_HOME/theoshell/cd-fav.txt
+mkdir -p $XDG_DATA_HOME/mumbo && touch $XDG_DATA_HOME/mumbo/cd-fav.txt
+cat <<AHH >> $XDG_DATA_HOME/mumbo/cd-fav.txt
 $XDG_CONFIG_HOME
 $XDG_DATA_HOME
 AHH
@@ -246,7 +246,7 @@ BYE
     - If preview breaks for whatever reason, use `C-l` to reset the screen
     - `ee`: Open a file in `$EDITOR`
     - `ec`: You choose what editor you want to open a file in
-    - `DD`: Move a file to `$XDG_DATA_HOME/theoshell/trash`
+    - `DD`: Move a file to `$XDG_DATA_HOME/mumbo/trash`
     - `gs`: [g]it [s]tatus
     - `ml`, `mr`, `ms`: [m]ark [l]oad, [m]ark [r]emove, [m]ark [s]ave
     - `md`: mkdir
