@@ -13,12 +13,12 @@ export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_DATA_HOME:="$HOME/.local/state"}
 
 # alias
-alias cl='clear'
-alias ga='git add'
-alias gcm='git commit -m'
-alias gss='git status'
-alias histgrep='echo "[Tip] Use !number to execute the command" && history | grep'
-alias l='ls -A -l -h --color=auto' # All file except . and .., list view, display unit suffix for the size
+# alias cl='clear'
+# alias ga='git add'
+# alias gcm='git commit -m'
+# alias gss='git status'
+# alias histgrep='echo "[Tip] Use !number to execute the command" && history | grep'
+# alias l='ls -A -l -h --color=auto' # All file except . and .., list view, display unit suffix for the size
 alias nv='neovide --fork'
 alias v=nvim
 
@@ -70,3 +70,16 @@ greeting() {
 PROMPT_DIRTRIM=3
 PS1="\[\e[1;36m\] >Hist#:\! Jobs:\j \[\e[0;34m\][\u\[\e[0;36m\]@\[\e[0;35m\]\h]:\[\e[1;31m\]\w \[\e[0m\]\$ "
 
+. "$HOME/.cargo/env"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib -L/opt/homebrew/opt/readline/lib -L/opt/homebrew/opt/zlib/lib -L/opt/homebrew/opt/libyaml/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include -I/opt/homebrew/opt/readline/include -I/opt/homebrew/opt/zlib/include -I/opt/homebrew/opt/libyaml/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
+
+
+export EDITOR="nvim"
+export VISUAL="nvim"
