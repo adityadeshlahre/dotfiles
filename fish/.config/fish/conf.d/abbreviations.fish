@@ -5,6 +5,7 @@
 #
 
 abbr -a cl clear
+abbr -a dockerps docker ps
 abbr -a ga git add
 abbr -a gcm git commit -m
 abbr -a gss git status
