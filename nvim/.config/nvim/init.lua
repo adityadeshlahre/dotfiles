@@ -93,10 +93,6 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
--- neo-void specific settings
-vim.g.neovide_opacity = 0.8
-vim.g.neovide_normal_opacity = 1.0
-
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -104,9 +100,6 @@ vim.g.neovide_normal_opacity = 1.0
 
 -- Make line numbers default
 vim.o.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
-vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -168,9 +161,6 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
--- Enable line wrapping
-vim.o.wrap = true
-
 -- Highlight max chars per line
 -- vim.o.colorcolumn = '120'
 
@@ -180,21 +170,6 @@ vim.o.wrap = true
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<leader>ft', '<cmd>FloatermToggle<CR>', { desc = 'Toggle floating terminal' })
-
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open diagnostic [E]rror' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
-vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR } end, { desc = 'Next error' })
-vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.ERROR } end, { desc = 'Previous error' })
-vim.keymap.set('n', '<leader>td', '<cmd>Telescope diagnostics bufnr=0<CR>', {
-  desc = 'Show buffer diagnostics (Telescope)',
-})
-vim.keymap.set('n', '<leader>tD', '<cmd>Telescope diagnostics<CR>', {
-  desc = 'Show all diagnostics (Telescope)',
-})
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -204,15 +179,6 @@ vim.keymap.set('n', '<leader>tD', '<cmd>Telescope diagnostics<CR>', {
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- Close current buffer
-vim.keymap.set('n', '<leader>Q', ':bd<CR>', { desc = 'Close current buffer' })
-
--- TIP: Disable arrow keys in normal mode
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -221,17 +187,6 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- Visual mode indentation
---  Use Tab to indent and Shift+Tab to unindent selected lines
-vim.keymap.set('v', '<Tab>', '>gv', { desc = 'Indent selected lines' })
-vim.keymap.set('v', '<S-Tab>', '<gv', { desc = 'Unindent selected lines' })
-
--- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -243,32 +198,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function() vim.hl.on_yank { timeout = 200 } end,
-})
-
--- Restore cursor position on file open
-vim.api.nvim_create_autocmd('BufReadPost', {
-  desc = 'Restore cursor position on file open',
-  group = vim.api.nvim_create_augroup('kickstart-restore-cursor', { clear = true }),
-  pattern = '*',
-  callback = function()
-    local line = vim.fn.line '\'"'
-    if line > 1 and line <= vim.fn.line '$' then
-      vim.cmd 'normal! g\'"'
-    end
-  end,
-})
-
--- auto-create missing dirs when saving a file
-vim.api.nvim_create_autocmd('BufWritePre', {
-  desc = 'Auto-create missing dirs when saving a file',
-  group = vim.api.nvim_create_augroup('kickstart-auto-create-dir', { clear = true }),
-  pattern = '*',
-  callback = function()
-    local dir = vim.fn.expand '<afile>:p:h'
-    if vim.fn.isdirectory(dir) == 0 then
-      vim.fn.mkdir(dir, 'p')
-    end
-  end,
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -501,90 +430,15 @@ require('lazy').setup({
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      -- vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set(
-        'n',
-        '<leader>sf',
-        function()
-          builtin.find_files {
-            find_command = {
-              'rg',
-              '--files',
-              '--hidden',
-              '--glob',
-              '!.git/**',
-              '--glob',
-              '!node_modules/**',
-              '--glob',
-              '!.dist/*',
-              '--glob',
-              '!*.lock',
-              '--glob',
-              '!.nx/**',
-              '--glob',
-              '!.next/**',
-              '--glob',
-              '!yarn.lock',
-            },
-          }
-        end,
-        { desc = '[S]earch [F]iles' }
-      )
+      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', function()
-        builtin.live_grep {
-          additional_args = function()
-            return {
-              '--no-ignore',
-              '--glob',
-              '!**/node_modules/*',
-              '--glob',
-              '!**/.git/*',
-              '--glob',
-              '!**/dist/*',
-              '--glob',
-              '!**/.next/*',
-              '--glob',
-              '!**/yarn.lock',
-              '--glob',
-              '!**/package-lock.json',
-              '--glob',
-              '!**/pnpm-lock.yaml',
-              '--glob',
-              '!**/tags',
-              '--glob',
-              '!bun.lockb',
-              '--glob',
-              '!bun.lock',
-              '--glob',
-              '!**/.DS_Store',
-            }
-          end,
-          -- vimgrep_arguments = {
-          --   'rg',
-          --   '--color=never',
-          --   '--no-heading',
-          --   '--with-filename',
-          --   '--line-number',
-          --   '--column',
-          --   '--smart-case',
-          --   '--no-ignore',
-          --   '--glob',
-          --   '!**/node_modules/*',
-          --   '--glob',
-          --   '!**/.git/*',
-          --   '--glob',
-          --   '!**/dist/*',
-          -- },
-        }
-      end, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected lines down' })
-      vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected lines up' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -595,19 +449,8 @@ require('lazy').setup({
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
 
-      -- It's also possible to pass additional configuration options.
-      --  See `:help telescope.builtin.live_grep()` for information about particular keys
-      vim.keymap.set('n', '<leader>s/', function()
-        builtin.live_grep {
-          grep_open_files = true,
-          prompt_title = 'Live Grep in Open Files',
-          additional_args = function() return { '--glob', '!**/node_modules/*' } end,
-        }
-      end, { desc = '[S]earch [/] in Open Files' })
-
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
-      vim.keymap.set('n', '<leader>ls', require('auto-session').search, { desc = '[S]earch [S]essions' })
     end,
   },
 
@@ -957,13 +800,16 @@ require('lazy').setup({
       --   end
       -- end,
       formatters_by_ft = {
-        -- lua = { 'null_ls' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { 'null_ls' },
-        ['*'] = { 'null_ls' },
+        lua = { 'stylua' },
+        python = { 'isort', 'black' },
+        javascript = { 'prettierd', 'prettier' },
+        typescript = { 'prettierd', 'prettier' },
+        javascriptreact = { 'prettierd', 'prettier' },
+        typescriptreact = { 'prettierd', 'prettier' },
+        json = { 'prettierd' },
+        markdown = { 'prettierd' },
+        yaml = { 'prettierd' },
+        go = { 'goimports', 'gofmt' },
       },
     },
   },
