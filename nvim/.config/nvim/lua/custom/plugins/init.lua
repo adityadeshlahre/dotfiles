@@ -91,19 +91,4 @@ return {
       vim.keymap.set('n', '<leader>ls', require('auto-session').search, { desc = '[S]earch [S]essions' })
     end,
   },
-
-  -- Custom user settings (neovide, wrap, relativenumber)
-  { import = 'custom.plugins.user_settings' },
-
-  -- Custom autocommands (restore cursor, auto-create dir)
-  { import = 'custom.plugins.autocmds' },
-
-  -- Custom keymaps
-  { import = 'custom.plugins.keymaps' },
-
-  -- Custom telescope config
-  { import = 'custom.plugins.telescope' },
-
-  -- Custom LSP config
-  { import = 'custom.plugins.lsp_config' },
 }
