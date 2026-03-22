@@ -64,12 +64,12 @@ automatically-unhide-macos-hidden-apps = false
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-    inner.horizontal = 10
-    inner.vertical =   10
-    outer.left =       10
-    outer.bottom =     10
-    outer.top =        10    # Set to 40 to use with my Sketchybar config
-    outer.right =      10
+    inner.horizontal = 4
+    inner.vertical =   4
+    outer.left =       4
+    outer.bottom =     4
+    outer.top =        4    # Set to 40 to use with my Sketchybar config
+    outer.right =      4
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
