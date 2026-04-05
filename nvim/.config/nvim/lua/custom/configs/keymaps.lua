@@ -21,3 +21,9 @@ vim.keymap.set('v', '<S-Tab>', '<gv', { desc = 'Unindent selected lines' })
 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected lines down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected lines up' })
+
+vim.keymap.set('n', 'p', function()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  vim.cmd 'put'
+  vim.api.nvim_win_set_cursor(0, { row + 1, col })
+end, { desc = 'Paste below and keep cursor position' })

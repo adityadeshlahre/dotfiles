@@ -158,6 +158,18 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-8 = 'move-node-to-workspace 8'
     alt-shift-9 = 'move-node-to-workspace 9'
 
+    [workspace-to-monitor-force-assignment]
+
+    1 = ['secondary', 'main']
+    2 = ['secondary', 'main']
+    3 = ['secondary', 'main']
+    4 = ['secondary', 'main']
+    5 = ['secondary', 'main']
+    6 = ['secondary', 'main']
+    7 = ['secondary', 'main']
+    8 = ['main', 'secondary']
+    9 = ['main', 'secondary']
+
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
     alt-tab = 'workspace-back-and-forth'
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor

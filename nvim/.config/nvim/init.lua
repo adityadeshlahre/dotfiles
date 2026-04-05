@@ -1034,6 +1034,8 @@ require('lazy').setup({
     opts = {
       ensure_installed = {
         'bash',
+        'c',
+        'cpp',
         'lua',
         'luadoc',
         'javascript',

@@ -1,6 +1,7 @@
 -- Custom LSP configuration
 
 vim.g.custom_lsp_servers = {
+  'clangd',
   'ts_ls',
   'jdtls',
   'golangci_lint_ls',
