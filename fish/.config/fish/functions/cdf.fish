@@ -1,11 +1,8 @@
-set -gx FZF_DEFAULT_COMMAND 'fd --hidden --strip-cwd-prefix --exclude ".git"'
-set -gx FZF_DEFAULT_OPTS '--layout=reverse --cycle --height=50% --margin=5% --border=double'
-
-fzf --fish | source
-
-function fssh -d "Fuzzy-find ssh host via ag and ssh into it"
-  ag --ignore-case '^host [^*]' ~/.ssh/config | cut -d ' ' -f 2 | fzf | read -l result; and ssh "$result"
-end
+# Custom "cd favorite" commands.
+# - `cdf_add` : adds the CWD to $THEOSHELL_CDF_DIR (~/.local/share/theoshell/cd-fav.txt),
+# - `cdf`     : executes a fzf to search and CD to the directory in the file
+# - `cdf_edit`: edits the file
+# not really used anymore since I started using zoxide.
 
 function cdf -d "[CDF] Directory Favorite/Bookmark using FZF"
   if not set -q THEOSHELL_CDF_DIR
@@ -31,4 +28,11 @@ function cdf_add -d "[CDF] Add CWD to the directory list"
   pwd >> $THEOSHELL_CDF_DIR
 end
 
-abbr cdf_edit $EDITOR $THEOSHELL_CDF_DIR
+function cdf_edit -d "[CDF] Edit $THEOSHELL_CDF_DIR file"
+  if set -q EDITOR
+    $EDITOR $THEOSHELL_CDF_DIR
+  else
+    nvim $THEOSHELL_CDF_DIR
+  end
+end
+

@@ -1,16 +1,42 @@
-# tap "homebrew/bundle"
-# tap "homebrew/cask"
-# tap "homebrew/core"
-
-brew "bat"
-brew "chafa"
-# brew "exiftool" # requires research
-brew "fastfetch"
-brew "fd" # install fzf and find
-brew "ffmpeg"
+# brew "chafa"
+# brew "exiftool"
 brew "figlet"
+# brew "openconnect"
+# brew "qemu"
+# brew "r"
+
+# cask "intellij-idea"
+# cask "kicad"
+cask "kitty"
+# cask "mactex-no-gui"
+# cask "rstudio"
+
+# cask "gimp"
+# cask "minecraft"
+cask "obs"
+# cask "spotify"
+# cask "vlc"
+
+# cask "notion"
+# cask "zotero"
+
+# cask "cryptomator"
+# cask "filen"
+# cask "nextcloud"
+
+# cask "cemu"
+# cask "keycastr"
+
+# cask "discord"
+# cask "thunderbird"
+
+
+# Personal additions
+brew "bat"
+brew "fastfetch"
+brew "fd"
+brew "ffmpeg"
 brew "git-filter-repo"
-# brew "hugo"
 brew "websocat"
 brew "zola"
 brew "kubernetes-cli"
@@ -19,10 +45,9 @@ brew "minikube"
 brew "zig"
 brew "uv"
 brew "imagemagick"
-brew "poppler" # install zathura and setup it
+brew "poppler"
 brew "ripgrep"
 brew "tree"
-brew "fd"
 brew "fisher"
 brew "lazygit"
 brew "luarocks"
@@ -36,41 +61,15 @@ brew "FelixKratz/formulae/borders"
 brew "koekeishiya/formulae/skhd"
 
 cask "docker"
-# cask "intellij-idea"
-cask "kitty"
-# cask "mactex-no-gui"
 cask "neovide"
 cask "deluge"
 cask "ungoogled-chromium"
-# cask "rstudio"
-# cask "utm"
-cask "discord"
 cask "telegram"
 cask "mongodb-compass"
 cask "gcloud-cli"
 cask "shottr"
 cask "dbeaver-community"
-
-# cask "minecraft"
-# cask "spotify"
-
-# cask "notion"
-
-# cask "cryptomator"
-# cask "filen"
-# cask "nextcloud"
-# cask "syncthing"
-
-# cask "cemu"
-# cask "gimp"
-# cask "keycastr"
-cask "obs"
-# cask "vlc"
 cask "cap"
-
-# cask "chromium"
-# cask "tailscale"
-# cask "thunderbird"
 
 cask "font-hack-nerd-font"
 cask "font-menlo-for-powerline"

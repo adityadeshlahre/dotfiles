@@ -4,16 +4,19 @@
 #  |  |_)|   |
 #
 
-# abbr -a cl clear
-# abbr -a ga git add
-# abbr -a gcm git commit -m
-# abbr -a gss git status
-# abbr -a l ls -Alh --color=auto # [A]lmost all (except . && ..), [l]ist, [h]: display unit
+abbr -a cl clear
+
+abbr -a ga git add
+abbr -a gcm git commit -m
+abbr -a gss git status
+
 abbr -a nv neovide --fork
 abbr -a v nvim
 abbr -a dockerps docker ps
 abbr -a lg lazygit
 # abbr -a weather curl 'https://wttr.in'
+
+alias l="eza --color=auto --icons=auto  --long --all --header --time-style=long-iso"
 
 # .. to cd .., ... to cd ../.., etc.
 function multicd

@@ -107,16 +107,17 @@ RPROMPT="%(?|%K{green}%F{black}|%K{red}%F{white})%B %? %b%f%k"
 
 
 ##### Alias #####
-# alias cl='clear'
-# alias ga='git add'
-# alias gcm='git commit -m'
-# alias gss='git status'
-# alias histgrep='echo "[Tip] Use !number to execute the command" && history -i | grep' # -i for the timestamp
-# alias l='ls -A -l -h --color=auto' # All file except . and .., list view, display unit suffix for the size
+alias cl='clear'
+
+alias ga='git add'
+alias gcm='git commit -m'
+alias gss='git status'
+
+alias histgrep='echo "[Tip] Use !number to execute the command" && history -i | grep'
+
 alias nv='neovide --fork'
 alias v=nvim
-
-# alias dot="cd \"$DOT_DIR\""
+alias l='eza --color=auto --icons=auto  --long --all --header --time-style=long-iso'
 
 
 ##### Functions #####
@@ -196,42 +197,30 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 
-##### FZF #####
-# I mean it is my machine so I would assume fd is installed
-#type -P fd &> /dev/null && export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude ".git"'
-#whence -p fd &> /dev/null && export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude ".git"'
+##### External Tools #####
+if (( $+commands[fd] )); then
+  export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude ".git"'
+fi
+export FZF_DEFAULT_OPTS='--layout=reverse --cycle --height=50% --margin=5% --border=double'
 
-source <(fzf --zsh)
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh)
+fi
 
-cdf() {
-  selected=$(find * -maxdepth 1 -type d 2>/dev/null | fzf \
-    --reverse --border=rounded --cycle --height=50% \
-    --header='Pick a directory to navigate to')
-  [[ -z $selected ]] && echo 'Nothing was selected :(' || cd "$selected"
-}
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh --cmd c)"
+fi
 
-alias manf="compgen -c | fzf | xargs man"
 
-sshf() {
-  [[ ! -e ~/.ssh/config ]] && echo 'There are no SSH config file!'
-  hostnames=$(awk ' $1 == "Host" { print $2 } ' ~/.ssh/config )
-  [[ -z "${hostnames}" ]] && echo 'There are no host param in the SSH config file'
-  selected=$(printf "%s\n" "${hostnames[@]}" | fzf \
-    --reverse --border=rounded --cycle --height=30% \
-    --header='pick a host')
-  [[ -z "${selected}" ]] && echo 'Nothing was selected :(' && return
-  echo "SSHing to ${selected}..." && ssh "$selected"
-}
 
+# Personal additions
 
 ##### Directory Bookmark using FZF #####
-
 cdf() {
   if [[ -z "$THEOSHELL_CDF_DIR" ]]; then
     echo "You must provide THEOSHELL_CDF_DIR"
     return 1
   fi
-
   dir=$(fzf --header="Favorite Directories" < $THEOSHELL_CDF_DIR)
   [[ ! -z "$dir" ]] && cd "$dir"
 }
@@ -241,33 +230,23 @@ cdf_add() {
     echo "You must provide THEOSHELL_CDF_DIR"
     return 1
   fi
-
   if [[ ! -e $THEOSHELL_CDF_DIR ]]; then
     mkdir -p $(dirname $THEOSHELL_CDF_DIR)
     touch $THEOSHELL_CDF_DIR
   fi
-
   pwd >> $THEOSHELL_CDF_DIR
 }
-
 alias cdf_edit="$EDITOR $THEOSHELL_CDF_DIR"
 
 
 ##### Git Information #####
 autoload -Uz vcs_info
-
 zstyle ':vcs_info:*' enable git
-# Hook before every commands
-# precmd_vcs_info() { vcs_info }
-# precmd_functions+=( precmd_vcs_info )
 setopt prompt_subst
-
 zstyle ':vcs_info:*' check-for-changes true
-
 zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:git:*' formats '%b%u%c'
-# Only displayed in Git action like rebase, merge, cherry-pick
 zstyle ':vcs_info:git:*' actionformats '[%b | %a%u%c]'
 precmd() {
   if git rev-parse --is-inside-work-tree &>/dev/null; then
@@ -276,17 +255,12 @@ precmd() {
 }
 
 
-##### Vim mode indicator #####
-# https://superuser.com/questions/151803/how-do-i-customize-zshs-vim-mode
-# perform parameter expansion/command substitution in prompt
+##### PROMPT #####
 setopt PROMPT_SUBST
-
 ins_mode_indicator="%F{yellow}[I]%f"
 norm_mode_indicator="%F{magenta}[N]%f"
-# Initial mode
 vi_mode_indicator=$ins_mode_indicator
 
-# on keymap change, define the mode and redraw prompt
 zle-keymap-select() {
   if [[ "$KEYMAP" == 'vicmd' ]]; then
     vi_mode_indicator=$norm_mode_indicator
@@ -297,78 +271,39 @@ zle-keymap-select() {
 }
 zle -N zle-keymap-select
 
-# reset to default mode at the end of line input reading
 zle-line-finish() {
   vi_mode_indicator=$ins_mode_indicator
 }
 zle -N zle-line-finish
 
-# When C-c in [N], the prompt becomes [N] even though you are in [I]
-# Fix by catching SIGNIT and set the prompt to int again, and resend SIGINT
 TRAPINT() {
   vi_mode_indicator=$ins_mode_indicator
   return $(( 128 + $1 ))
 }
 
-
-##### PROMPT #####
-
-# %(5~|%-1~/…/%3~|%4~) - IF path_len > 5 THEN print 1st element; print /.../; print last 3 elem; ELSE print 4 elem;
 PROMPT=" \$vi_mode_indicator %F{magenta}%n@%m%f %F{blue}%(5~|%-1~/.../%3~|%4~)%f %F{cyan}\$vcs_info_msg_0_%f %F{white}❱%f "
-
 RPROMPT="%(?|%F{green}|%F{red})[%?]%f "
 
 
 ##### Greeting #####
 function zsh_greeting() {
-  # Colors
   normal='\033[0m'
+  red='\033[0;31m'; brred='\033[1;31m'
+  green='\033[0;32m'; brgreen='\033[1;32m'
+  yellow='\033[0;33m'; bryellow='\033[1;33m'
+  blue='\033[0;34m'; brblue='\033[1;34m'
+  magenta='\033[0;35m'; brmagenta='\033[1;35m'
+  cyan='\033[0;36m'; brcyan='\033[1;36m'
 
-  red='\033[0;31m'
-  brred='\033[1;31m'
-  green='\033[0;32m'
-  brgreen='\033[1;32m'
-  yellow='\033[0;33m'
-  bryellow='\033[1;33m'
-  blue='\033[0;34m'
-  brblue='\033[1;34m'
-  magenta='\033[0;35m'
-  brmagenta='\033[1;35m'
-  cyan='\033[0;36m'
-  brcyan='\033[1;36m'
-
-  # Collection of Oliver ASCII arts
   olivers=(
-    '
-       \/   \/
-       |\__/,|     _
-     _.|o o  |_   ) )
-    -(((---(((--------
-    ' \
-    '
-                           _
-          |\      _-``---,) )
-    ZZZzz /,`.-```    -.   /
-         |,4-  ) )-,_. ,\ (
-        `---``(_/--`  `-`\_)
-    ' \
-    '
-       \/   \/
-       |\__/,|        _
-       |_ _  |.-----.) )
-       ( T   ))        )
-      (((^_(((/___(((_/
-    '
+    ' \/   \/; |\__/,|     _; _.|o o  |_   ) ); -(((---(((--------' \
+    ' |\      _-``---,) ); ZZZzz /,`.-```    -.   /; |,4-  ) )-,_. ,\ (; `---``(_/--`  `-`\_)' \
+    ' \/   \/; |\__/,|        _; |_ _  |.-----.) ); ( T   ))        ); (((^_(((/___(((_/' \
   )
-  # 1. RANDOM is biased toward the lower index
-  # 2. Array index in ZSH starts at 1
   oliver=${olivers[ $(( RANDOM % ${#olivers[@]} + 1 )) ]}
-
-  # Other information
   zsh_ver="$(zsh --version)"
   uptime=$(uptime | grep -ohe 'up .*' | sed 's/,//g' | awk '{ print $2" "$3 " " }')
 
-  # Greeting msg
   echo
   echo -e "  " "$brgreen" "Meow"                             "$normal"
   echo -e "  " "$brred"   "$oliver"                          "$normal"
@@ -376,77 +311,36 @@ function zsh_greeting() {
   echo -e "  " "$blue"    "  Uptime:\t"  "$brblue$uptime"   "$normal"
   echo
 }
-
 zsh_greeting
 
 
-# gvm path start
-# [[ -s "/Users/mumbo/.gvm/scripts/gvm" ]] && source "/Users/mumbo/.gvm/scripts/gvm"
+# gvm
 export GVM_DIR="$HOME/.gvm"
+gvm() { unset -f gvm go; source "$GVM_DIR/scripts/gvm"; gvm "$@" }
+go() { unset -f gvm go; source "$GVM_DIR/scripts/gvm"; go "$@" }
 
-gvm() {
-  unset -f gvm go
-  source "$GVM_DIR/scripts/gvm"
-  gvm "$@"
-}
-
-go() {
-  unset -f gvm go
-  source "$GVM_DIR/scripts/gvm"
-  go "$@"
-}
-# gvm path end
-
-# pyenv path start
+# pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+pyenv() { unset -f pyenv; eval "$(command pyenv init -)"; pyenv "$@" }
+pyenv-virtualenv() { unset -f pyenv-virtualenv; eval "$(pyenv virtualenv-init -)" }
 
-# eval "$(pyenv init -)"
-pyenv() {
-  unset -f pyenv
-  eval "$(command pyenv init -)"
-  pyenv "$@"
-}
-
-
-# eval "$(pyenv virtualenv-init -)"
-pyenv-virtualenv() {
-  unset -f pyenv-virtualenv
-  eval "$(pyenv virtualenv-init -)"
-}
-# Pyenv path end
-
-# [ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh"
-# [ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix nvm)/etc/bash_completion.d/nvm"
+# nvm
 export NVM_DIR="$HOME/.nvm"
-
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
 export GPG_TTY=$(tty)
-
 alias dockerps="docker ps"
-
-# Added by Antigravity
 export PATH="/Users/mumbo/.antigravity/antigravity/bin:$PATH"
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# export PATH="$PATH:$HOME/.rvm/bin"
-# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+# rvm
 export RVM_DIR="$HOME/.rvm"
-
-rvm() {
-  unset -f rvm
-  source "$RVM_DIR/scripts/rvm"
-  rvm "$@"
-}
+rvm() { unset -f rvm; source "$RVM_DIR/scripts/rvm"; rvm "$@" }
 
 export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib -L/opt/homebrew/opt/readline/lib -L/opt/homebrew/opt/zlib/lib -L/opt/homebrew/opt/libyaml/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include -I/opt/homebrew/opt/readline/include -I/opt/homebrew/opt/zlib/include -I/opt/homebrew/opt/libyaml/include"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
 
-
 export EDITOR="nvim"
 export VISUAL="nvim"
-zmodload zsh/zprof

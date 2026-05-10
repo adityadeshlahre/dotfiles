@@ -18,39 +18,31 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_DATA_HOME:="$HOME/.local/state"}
 
-export DOT_DIR="$HOME/dotfiles"
+export THEOSHELL_TRASH_DIR="$XDG_DATA_HOME/theoshell/trash"
+export ZSH_PLUGIN_DIR="$XDG_DATA_HOME/theoshell/zsh-plugins"
 
 export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude ".git"'
 export FZF_DEFAULT_OPTS='--layout=reverse --cycle --height=50% --margin=5% --border=double'
 
+# Personal overrides
 export THEOSHELL_TRASH_DIR="$XDG_DATA_HOME/mumbo/trash"
 export THEOSHELL_CDF_DIR="$XDG_DATA_HOME/mumbo/cd-fav.txt"
 export ZSH_PLUGIN_DIR="$XDG_DATA_HOME/mumbo/zsh-plugins"
-
-
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 export PATH
 
+# Personal additions
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# export XDG_DATA_HOME="$HOME/.local/share"
-# export XDG_CONFIG_HOME="$HOME/.config"
-#
-# Java installations (using Homebrew paths)
 export JAVA21_HOME="$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home"
-# export JAVA17_HOME="$(brew --prefix openjdk@17)/libexec/openjdk.jdk/Contents/Home"
-
-# Default Java
 export JAVA_HOME="$JAVA21_HOME"
 export PATH="$JAVA_HOME/bin:$PATH"
 
-# Quick switching aliases
-# alias use-java17='export JAVA_HOME=$JAVA17_HOME && export PATH=$JAVA_HOME/bin:$PATH'
 alias use-java21='export JAVA_HOME=$JAVA21_HOME && export PATH=$JAVA_HOME/bin:$PATH'
 . "$HOME/.cargo/env"
