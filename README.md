@@ -109,9 +109,6 @@ cd -
 Now is a good time to reopen the terminal.
 
 ```sh
-# Fish universal variables
-fish ~/dotfiles/fish/.config/fish/set-universal.fish
-
 # Create and add directories to the directory bookmark/favorites list for my `cdf` function
 mkdir -p $XDG_DATA_HOME/mumbo && touch $XDG_DATA_HOME/mumbo/cd-fav.txt
 cat <<AHH >> $XDG_DATA_HOME/mumbo/cd-fav.txt
