@@ -29,7 +29,8 @@ alternative [installation methods below](#alternative-neovim-installation-method
 ### Install External Dependencies
 
 External Requirements:
-- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
+- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`), `node` & `npm`
+- `npm install -g tree-sitter-cli` (for treesitter parser compilation)
 - [ripgrep](https://github.com/BurntSushi/ripgrep#installation),
   [fd-find](https://github.com/sharkdp/fd#installation)
 - Clipboard tool (xclip/xsel/win32yank or other depending on the platform)
